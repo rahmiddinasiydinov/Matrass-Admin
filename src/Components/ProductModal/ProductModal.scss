@@ -99,6 +99,27 @@
             transition: .3s;
         }
     }
+    &__text{
+        position: absolute;
+        display: block;
+        text-align: center;
+        bottom: 10px;
+        color: #12AF18;
+        width: 100%;
+        font-size: 28px;
+        font-weight: 700;
+        opacity: 0;
+        transition: .5s;
+        &--active{
+            opacity: 1;
+            transition: .5s;
+        }
+        &--error{
+            color:red;
+            opacity: 1;
+            transition: .5s;
+        }
+    }
 }
 option{
     color: #01384D;

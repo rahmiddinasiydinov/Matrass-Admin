@@ -7,9 +7,8 @@ import { ReactComponent as Exit } from '../../Assets/Images/exit.svg';
 import { ReactComponent as Image } from '../../Assets/Images/Image.svg';
 import {ReactComponent as Check} from "../../Assets/Images/check.svg";
 import {ReactComponent as Uncheck } from '../../Assets/Images/uncheck.svg';
-import {IProduct} from '../../Pages/Product'
 import { Switch } from '@mui/material';
-
+import axios from 'axios';
 interface Imodal{
     open: boolean, 
     handleClose:()=>void
@@ -22,12 +21,29 @@ interface Imodal{
    updatedAt: string;
    id: number;
  }
+interface InewProduct {
+  capacity: string;
+  categoryId: number;
+  description: string;
+  discount_price: number;
+  img: string;
+  isDiscount: boolean;
+  isNew: boolean;
+  price: number;
+  size: string;
+  title: string;
+  warranty: number;
+  yuklama: number;
+}
 export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
     const [category, setCategory] = React.useState<Icategory[] | null>(null)
     const [discount, setDiscount] = React.useState<boolean>(false);
     const [isnew, setNew] = React.useState<boolean>(true);
     const [active, setActive] = React.useState<boolean>(true);
-    const [toggle, setToggle] = React.useState<boolean>(false)
+  const [toggle, setToggle] = React.useState<boolean>(false);
+  const [response, setResponse] = React.useState<string>(
+    "Successfully accepted!"
+  );
      React.useEffect(() => {
        fetch("https://matrassesapp.herokuapp.com/api/category")
          .then((res) => res.json())
@@ -38,47 +54,58 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
              }
          });
      }, [toggle]);
-    
+  const text = React.useRef < HTMLParagraphElement | null>(null)
     //submitting form
     const handleSubmit = (e: any): void => {
         e.preventDefault();
-        const { img, category, name, price, yuklama, size, gauranty, capacity, discount_price, info } = e.target.elements;
-        console.log(img.value, category.value);
-        console.log(name.value, price.value);
-        console.log(yuklama.value, size.value);
-        console.log(gauranty.value, capacity.value);
-        console.log(discount_price.value, info.value);
+        const { img, categoryId, title, price, yuklama, size, warranty, capacity, discount_price, description } = e.target.elements;
+       
+  
+      
         const formData = new FormData();
-        formData.append('categoryId', category.value);
+        formData.append('categoryId', categoryId.value);
         formData.append("capacity", capacity.value);
-        formData.append("description", info.value);
-        formData.append("img", img.value);
+        formData.append("description", description.value);
+        formData.append("img", img.files[0]);
         formData.append("isNew", String(isnew));
-        formData.append("warranty", gauranty.value);
+        formData.append("warranty", warranty.value);
         formData.append("yuklama", yuklama.value);
-        formData.append("title", name.value);
+        formData.append("title", title.value);
         formData.append("size", size.value);
         formData.append("price", price.value);
         formData.append("isDiscount", String(discount));
         formData.append("discount_price", discount ? discount_price.value : price.value);
-        fetch("https://matrassesapp.herokuapp.com/api/product", {
-          method: "POST",
-            headers: {
-              "Content-Type":"multipart/form-data"
-          },
-          body: formData,
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-            setToggle(!toggle);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
         
-    }
+      axios({
+        url: "https://matrassesapp.herokuapp.com/api/product",
+        method: "POST", 
+        headers: {
+           "Content-Type":"multipart/form-data"
+        }, 
+        data:formData
+      }).then(res => {
+        console.log(res);
+        if (res.status === 200) {
+          setToggle(!toggle)
+          text.current?.classList.add('promodal__text--active');
+          setTimeout(() => {
+          text.current?.classList.remove("promodal__text--active");
+            
+          }, 5000)
+        } else {
+           text.current?.classList.add("promodal__text--error");
+           setTimeout(() => {
+             text.current?.classList.remove("promodal__text--error");
+           }, 5000);
+        }
+      }
+      );
     
+   
+    }
+  
+    
+  
     
   return (
     <div>
@@ -95,11 +122,18 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
       >
         <Fade in={open}>
           <div className="promodal">
+            <p className="promodal__text" ref={text}>{ response}</p>
             <button className="promodal__exit" onClick={handleClose}>
               <Exit />
             </button>
             <h2 className="promodal__title">Qo'shish</h2>
-            <form action="" className="promodal__form" onSubmit={handleSubmit}>
+            <form
+              action="https://matrassesapp.herokuapp.com/api/product"
+              className="promodal__form"
+              encType="multipart/form-data"
+              method="POST"
+              onSubmit={handleSubmit}
+            >
               <div className="promodal__section">
                 <label htmlFor="img" className="promodal__label--img">
                   <Image />
@@ -116,7 +150,11 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
                 <label htmlFor="category" className="promodal__label">
                   Toifalar
                 </label>
-                <select name="category" className="promodal__input" id="category">
+                <select
+                  name="categoryId"
+                  className="promodal__input"
+                  id="category"
+                >
                   {category?.map((e: Icategory, i: number) => {
                     return <option value={e.id}>{e.model}</option>;
                   })}
@@ -126,7 +164,7 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
                 </label>
                 <input
                   type="text"
-                  name="name"
+                  name="title"
                   id="name"
                   className="promodal__input"
                   placeholder="masalan: Lux Soft Memory"
@@ -168,7 +206,7 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
                 </label>
                 <input
                   type="number"
-                  name="gauranty"
+                  name="warranty"
                   id="gauranty"
                   className="promodal__input"
                   placeholder="masalan: 3"
@@ -201,7 +239,11 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
                       }
                     }}
                   />
-                  <span className={`promodal__discount--icon ${discount?"promodal__discount--active":""}`}>
+                  <span
+                    className={`promodal__discount--icon ${
+                      discount ? "promodal__discount--active" : ""
+                    }`}
+                  >
                     {discount ? <Check /> : <Uncheck />}
                   </span>
                 </div>
@@ -211,7 +253,7 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
                   Ma'lumot
                 </label>
                 <textarea
-                  name="info"
+                  name="description"
                   id="info"
                   className="promodal__textarea"
                 ></textarea>
@@ -222,8 +264,8 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
                     size="medium"
                     defaultChecked={isnew}
                     color="success"
-                    onChange={()=>{
-                        setNew(!isnew)
+                    onChange={() => {
+                      setNew(!isnew);
                     }}
                   />
                 </label>
@@ -234,8 +276,8 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
                     size="medium"
                     defaultChecked={active}
                     color="success"
-                    onChange={()=>{
-                        setActive(!active)
+                    onChange={() => {
+                      setActive(!active);
                     }}
                   />
                 </label>
