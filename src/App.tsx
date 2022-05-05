@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.scss';
 import { NavLink, Link } from 'react-router-dom';
 import { Routes, Route, } from 'react-router';
-import {ReactComponent as Adress} from './Assets/Images/adress.svg'
+import {ReactComponent as AdressIcon} from './Assets/Images/adress.svg'
 import {ReactComponent as Customer} from "./Assets/Images/customer.svg";
 import {ReactComponent as Order} from "./Assets/Images/home.svg";
 import {ReactComponent as Logo} from "./Assets/Images/logo.svg";
@@ -18,6 +18,8 @@ import { Model } from './Pages/Models';
 import { Home } from './Pages/Home';
 import { Notfound } from './Pages/Notfound';
 import { Products } from './Pages/Product';
+import { Technologies } from './Pages/Technologies';
+import { Adress } from './Pages/Adress';
 function App() {
   const [open, setopen] = useState<boolean>(false)
   const handletoggle = () => setopen(!open);
@@ -69,7 +71,7 @@ function App() {
             </NavLink>
           </li>
           <li className="app__item">
-            <NavLink to="/techno" className="app__link">
+            <NavLink to="/technology" className="app__link">
               <span className="app__icon">
                 <Techno />
               </span>
@@ -79,7 +81,7 @@ function App() {
           <li className="app__item">
             <NavLink to="/adress" className="app__link">
               <span className="app__icon">
-                <Adress />
+                <AdressIcon />
               </span>
               Manzil
             </NavLink>
@@ -121,9 +123,11 @@ function App() {
         <div className="app__body">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path='/model' element={<Model/>}/>
+            <Route path="/model" element={<Model />} />
             <Route path="/*" element={<Notfound />} />
-            <Route path='/product/' element={<Products/>}/>
+            <Route path="/product/" element={<Products />} />
+            <Route path="/technology/" element={<Technologies />} />
+            <Route path="/adress" element={<Adress/>} />
           </Routes>
         </div>
       </div>

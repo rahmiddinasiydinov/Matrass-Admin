@@ -95,10 +95,12 @@
         }
         &--trash{
             background-color: rgba($color: #D61F1F, $alpha: .1);
+            margin-left: 10px;
         }
         &--pen{
             background-color: rgba($color: #01384D, $alpha: .1);
             margin-right: 10px;
+            
         }
         &:hover{
             transition: .3s;
