@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.scss';
 import { NavLink, Link } from 'react-router-dom';
-import { Routes, Route, useParams } from 'react-router';
+import { Routes, Route, } from 'react-router';
 import {ReactComponent as Adress} from './Assets/Images/adress.svg'
 import {ReactComponent as Customer} from "./Assets/Images/customer.svg";
 import {ReactComponent as Order} from "./Assets/Images/home.svg";
@@ -23,10 +23,10 @@ function App() {
   const handletoggle = () => setopen(!open);
   const url =new window.URLSearchParams();
   console.log(url.entries);
-  const token = window.localStorage.getItem('token');
-  if (!token) {
-    window.location.assign("https://matras1.netlify.app/login");
-  }
+  // const token = window.localStorage.getItem('token');
+  // if (!token) {
+  //   window.location.assign("https://matras1.netlify.app/login");
+  // }
   return (
     <div className={`app ${open ? "" : " app__menu"}`}>
       <div className="app__navbar">

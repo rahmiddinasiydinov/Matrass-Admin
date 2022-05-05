@@ -11,7 +11,7 @@ interface Iorder {
   updatedAt: string;
 }
 export const Customer: React.FC = () => {
-  const [customers, setCustomers] = useState<  null>(null);
+  const [customers, setCustomers] = useState< Iorder|null>(null);
   useEffect(() => {
     fetch("https://matrassesapp.herokuapp.com/api/order").then((res) =>
       res.json().then((data) => {
