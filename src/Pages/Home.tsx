@@ -16,6 +16,8 @@ export const Home: React.FC = () => {
         fetch("https://matrassesapp.herokuapp.com/api/order")
             .then(res => res.json()
                 .then(data => {
+                    console.log(data);
+                    
                 setOreders(data)
             }));
     }, [])
@@ -27,7 +29,7 @@ export const Home: React.FC = () => {
               <th className="table-head">ID</th>
               <th className="table-head">Ismi</th>
               <th className="table-head">Telefon raqami</th>
-              <th className="table-head">Mahsulot nomlari</th>
+              <th className="table-head">Mahsulot Id</th>
               <th className="table-head">Miqdor</th>
               <th className="table-head">Qayta Aloqa</th>
             </tr>
@@ -39,8 +41,8 @@ export const Home: React.FC = () => {
                    <td className="table-data">{e.id}</td>
                    <td className="table-data">{e.name}</td>
                    <td className="table-data">{e.phone_number}</td>
-                   <td className="table-data">{'name'}</td>
                    <td className="table-data">{e.productId}</td>
+                   <td className="table-data">{e.amount}</td>
                        <td className="table-data">
                            <Switch size='medium' defaultChecked={true} color='success'/>
                        </td>
