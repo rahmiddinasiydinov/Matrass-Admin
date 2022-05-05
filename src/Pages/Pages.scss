@@ -1,0 +1,116 @@
+@import '../Helpers/Variables.scss';
+.table{
+    
+    &__wrapper{
+        position: relative ;
+        height: 600px ;
+        overflow: auto ;
+        
+    }
+    &-dark{
+        position: sticky;
+        top: 0;
+    }
+    &-head{
+        padding: 15px 30px !important;
+        background-color: #01384D !important;
+        
+        
+    }
+    &-data{
+        padding: 15px 30px !important;
+        color: #01384D !important;
+    }
+    &-body{
+        border: 1px solid rgba($color: #01384D, $alpha: .3);
+    }
+    
+}
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #ffffff;
+    
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+.notfound{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__title{
+        font-size: 300px;
+        margin-top: 50px;
+        color: #01384D;
+    }
+    &__text{
+        margin-top: 30px;
+        font-size: 20px;
+        color: rgba($color: #01384D, $alpha: .5);
+    }
+    &__btn{
+        padding: 17px 100px;
+        width: 300px;
+        display: block;
+        text-align: center;
+        margin-top: 30px;
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+        text-align: center;
+        color: #FFFFFF;
+        background: #01384D;
+        border-radius: 7px;
+        border: 2px solid #01384D;
+        
+    }
+}
+.model{
+    &__btn{
+        width: 34px;
+        height: 34px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        transition: .3s;
+        border-radius: 5px;
+        &--group{
+            display: flex;
+            align-items: center;
+        }
+        &--trash{
+            background-color: rgba($color: #D61F1F, $alpha: .1);
+        }
+        &--pen{
+            background-color: rgba($color: #01384D, $alpha: .1);
+            margin-right: 10px;
+        }
+        &:hover{
+            transition: .3s;
+            transform: scale(1.2);
+        }
+    }
+}
+.product{
+    &__add{
+        position: fixed;
+        right: 50px;
+        bottom: 50px;
+        @include button
+    }
+}

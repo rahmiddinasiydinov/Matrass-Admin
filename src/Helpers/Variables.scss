@@ -1,0 +1,65 @@
+
+@mixin button{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 14px 28px;
+    background-color: #01384D;
+    border: 2px solid #01384D;
+    color: #FFFFFF;
+    box-sizing: border-box;
+    border-radius: 5px;
+    transition: .3s;
+    cursor: pointer;
+    &:hover{
+        color: #01384D;
+        background-color: #FFFFFF;
+        transition: .3s;
+    }
+    &:active{
+        color: #01384D;
+        background-color: #EABF9F;
+        transition: .3s;
+    }
+}
+@mixin label{
+    font-family: 'Montserrat';
+    display: block;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 10px;
+    color: #000000;
+    margin-bottom: 20px;
+    max-width: 220px;
+}
+@mixin label-img {
+    width:230px;
+    height: 230px;
+    background: rgba($color: #01384D, $alpha: .1);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+@mixin input {
+    padding: 12px 15px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 17px;
+    width: 220px;
+    max-width: 100%;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    color: #000000;
+    margin-bottom: 20px;
+    &::placeholder{
+        color: rgba($color: #000000, $alpha: .5);
+    }
+}

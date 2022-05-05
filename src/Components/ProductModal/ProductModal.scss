@@ -1,0 +1,105 @@
+@import '../../Helpers/Variables.scss';
+.promodal{
+    padding: 25px;
+    width: 1090px;
+    max-width: 100%;
+    height: 500px;
+    background-color: #FFFFFF;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    &__title{
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 22px;
+        color: #01384D;
+    }
+    &__exit{
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #01384D;
+        border: 2px solid #01384D ;
+        cursor: pointer;
+    }
+    &__form{
+        display: flex;
+        justify-content: center;
+    }
+    &__section{
+        width: 25%;
+    }
+    &__label{
+        @include label;
+        &--img{
+            @include label-img
+        }
+    }
+    &__input{
+        @include input;
+        &--img{
+            color: #000;
+            margin-top: 20px;
+        }
+    }
+    &__textarea{
+        @include input;
+        height: 127px;
+        resize: none;
+    }
+    &__switch{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &__submit{
+        @include button;
+        display: block;
+        width: 220px;
+        max-width: 100%;
+    }
+    &__discount{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        &--input{
+            font-size: 12px;
+            line-height: 15px;
+            border: none;
+            background-color: transparent;
+            padding: 0;
+            outline: none;
+            color: #000;
+            width: 150px;
+
+        }
+        &--icon{
+            background-color: rgba($color: #000000, $alpha: .1);
+            width: 28px;
+            height: 28px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: .3;
+            flex-grow: 1;
+        }
+        &--active{
+            background-color: #12AF18;
+            transition: .3s;
+        }
+    }
+}
+option{
+    color: #01384D;
+}
