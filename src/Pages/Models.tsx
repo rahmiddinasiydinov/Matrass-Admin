@@ -5,6 +5,13 @@ import { ReactComponent as Trash } from "../Assets/Images/trash.svg";
 import React from "react";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import { Switch } from "@mui/material";
+import {ReactComponent as Exit} from  '../Assets/Images/exit.svg'
+import axios from 'axios';
 
 interface Imodel {
   id: number;
@@ -61,7 +68,8 @@ export const Model: React.FC = () => {
       })
       .catch((e: any) => {
           handleWarningClose();
-          handleErrorClick();
+          setToggle(!toggle)
+          handleClick();
       });
   };
 
@@ -92,9 +100,61 @@ export const Model: React.FC = () => {
   const handleWarningClose = (event?: React.SyntheticEvent | Event) => {
     setWarningOpen(false);
   };
+
+   const [openModal, setOpenModal] = React.useState(false);
+   const handleOpenModal = () => setOpenModal(true);
+   const handleCloseModal = () => setOpenModal(false);
+  const [state, setState] = useState<boolean>(true);
+  const handleSubmit = (e:any) => {
+    e.preventDefault();
+    const { category } = e.target.elements;
+    console.log(category.value);
+    axios.post(
+       "https://matrassesapp.herokuapp.com/api/category",{
+           isActive:state, 
+           model:category.value
+      }
+    ).then(res => {
+      console.log(res);
+      setToggle(!toggle);
+      
+    });
+    
+   }
   return (
     <>
-      {" "}
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div className="category">
+           <span className="category__exit" onClick={handleCloseModal}><Exit/></span>
+          <h2 className="category__title">Qo'shish</h2>
+          <form action="" className="category__form" onSubmit={handleSubmit}>
+            <label htmlFor="" className="category__label">
+              Kategoriya nomi
+            </label>
+            <input
+              type="text"
+              className="category__input"
+              placeholder="masalan: Model B"
+              name='category'
+            />
+            <div className="category__state">
+              Holat{" "}
+              <Switch
+                size="medium"
+                defaultChecked={state}
+                color="success"
+                onChange={() => setState(!state)}
+              />
+            </div>
+            <button className="category__btn">Qo'shish</button>
+          </form>
+        </div>
+      </Modal>{" "}
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           Delelted successlully!
@@ -105,7 +165,7 @@ export const Model: React.FC = () => {
         autoHideDuration={6000}
         onClose={handleErrorClose}
       >
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+        <Alert onClose={handleErrorClose} severity="error" sx={{ width: "100%" }}>
           Error ocured!
         </Alert>
       </Snackbar>
@@ -114,7 +174,11 @@ export const Model: React.FC = () => {
         autoHideDuration={6000}
         onClose={handleWarningClose}
       >
-        <Alert onClose={handleWarningClose} severity="warning" sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleWarningClose}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
           Sending...
         </Alert>
       </Snackbar>
@@ -135,7 +199,7 @@ export const Model: React.FC = () => {
                   <td className="table-data">{e.model}</td>
                   <td className="table-data">
                     <div className="model__btn--group">
-                      <button className="model__btn model__btn--pen0" >
+                      <button className="model__btn model__btn--pen0">
                         <Pen />
                       </button>
                       <button
@@ -154,6 +218,9 @@ export const Model: React.FC = () => {
           </tbody>
         </table>
       </div>
+      <button onClick={handleOpenModal} className="product__add">
+        Qo'shish
+      </button>
     </>
   );
 };

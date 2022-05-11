@@ -1,8 +1,21 @@
+import * as React from 'react'
 import { useEffect, useState } from "react";
 import "./Pages.scss";
 import { Switch } from "@mui/material";
 import axios from "axios";
-import {ReactComponent as Trash } from '../Assets/Images/trash.svg';
+import { ReactComponent as Trash } from '../Assets/Images/trash.svg';
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
 interface Icustomer {
   communication: boolean;
   id: number;
@@ -14,6 +27,7 @@ interface Icustomer {
 }
 export const Customer: React.FC = () => {
   const [customers, setCustomer] = useState<Icustomer[] | null>(null);
+  const [toggle, setToggle] = useState<boolean>(false)
   useEffect(() => {
     fetch("https://matrassesapp.herokuapp.com/api/contact").then((res) =>
       res.json().then((data) => {
@@ -21,8 +35,34 @@ export const Customer: React.FC = () => {
         setCustomer(data)
       })
     );
-  }, []);
+  }, [toggle]);
+
+
+  //snackbar
+    const [open, setOpen] = React.useState(false);
+
+    const handleClick = () => {
+      setOpen(true);
+    };
+
+    const handleClose = (
+      event?: React.SyntheticEvent | Event,
+      reason?: string
+    ) => {
+      if (reason === "clickaway") {
+        return;
+      }
+
+      setOpen(false);
+    };
   return (
+    <Stack spacing={2} sx={{ width: '100%' }}>
+
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+        Deleted succesfully!
+        </Alert>
+      </Snackbar>
     <div className="table__wrapper">
       <table className="table">
         <thead className="table-dark">
@@ -31,7 +71,7 @@ export const Customer: React.FC = () => {
             <th className="table-head">Sana</th>
             <th className="table-head">Telefon raqami</th>
             <th className="table-head">Qayta aloqa</th>
-            <th className="table-head"></th>
+            <th className="table-head">O'chirish</th>
          
           </tr>
         </thead>
@@ -43,36 +83,56 @@ export const Customer: React.FC = () => {
                 <td className="table-data">{e.date}</td>
                 <td className="table-data">{e.phone_number}</td>
                 <td className="table-data">
-                  <Switch size="medium" defaultChecked={e.communication} color="success" onChange={() => {
-                    axios({
-                      method: "PUT",
-                      url: "https://matrassesapp.herokuapp.com/api/contact",
-                      data: {
+                  <Switch
+                    size="medium"
+                    defaultChecked={e.communication}
+                    color="success"
+                    onChange={() => {
+                      axios({
+                        method: "PUT",
+                        url: "https://matrassesapp.herokuapp.com/api/contact",
+                        data: {
                           communication: !e.communication,
                           id: e.id,
-                          date:e.date,
+                          date: e.date,
                           createdAt: e.createdAt,
                           isDelete: e.isDelete,
                           phone_number: e.phone_number,
-                          updatedAt: e.updatedAt
-                      }
-                    }).then(res => {
-                      console.log(res);
-                      
-                    });
-                  }}/>
-                    </td>
-                 <button className="model__btn model__btn--trash"
-                        onClick={() => {
-                        }}
-                      >
-                  <Trash />
+                          updatedAt: e.updatedAt,
+                        },
+                      }).then((res) => {
+                        console.log(res);
+                      });
+                    }}
+                  />
+                </td>
+                <td>
+                  <button
+                    className="model__btn model__btn--trash"
+                    onClick={() => {
+                        axios({
+                          method:"DELETE",
+                          url: "https://matrassesapp.herokuapp.com/api/contact",
+                          data: {
+                            id:e.id
+                          }
+                        }).then(res => {
+                          console.log(res);
+                          handleClick();
+                          setToggle(!toggle);
+                          
+                        });
+                    }}
+                  >
+                    <Trash />
                   </button>
+                </td>
               </tr>
             );
           })}
         </tbody>
       </table>
-    </div>
+      </div>
+      </Stack>
   );
 };
