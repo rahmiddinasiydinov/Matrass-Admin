@@ -97,7 +97,6 @@ export const Technologies: React.FC = () => {
   };
   return (
     <>
-      <ProductModel open={modalOpen} handleClose={handleModalClose} />{" "}
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           Delelted successlully!

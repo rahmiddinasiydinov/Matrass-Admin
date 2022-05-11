@@ -11,7 +11,8 @@ import { Switch } from '@mui/material';
 import axios from 'axios';
 interface Imodal{
     open: boolean, 
-    handleClose:()=>void
+  handleClose: () => void,
+  handleToggle:() => void
 }
  interface Icategory {
    model: string;
@@ -35,7 +36,7 @@ interface InewProduct {
   warranty: number;
   yuklama: number;
 }
-export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
+export const ProductModel: React.FC<Imodal> = ({ open, handleClose, handleToggle }) => {
     const [category, setCategory] = React.useState<Icategory[] | null>(null)
     const [discount, setDiscount] = React.useState<boolean>(false);
     const [isnew, setNew] = React.useState<boolean>(true);
@@ -49,7 +50,6 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
          .then((res) => res.json())
            .then((data) => {
                if (data) {
-                 
                    setCategory(data);
              }
          });
@@ -66,7 +66,7 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
         formData.append('categoryId', categoryId.value);
         formData.append("capacity", capacity.value);
         formData.append("description", description.value);
-        formData.append("img", img.files[0]);
+        formData.append("img", img.files);
         formData.append("isNew", String(isnew));
         formData.append("warranty", warranty.value);
         formData.append("yuklama", yuklama.value);
@@ -77,20 +77,17 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
         formData.append("discount_price", discount ? discount_price.value : price.value);
         
       axios({
-        url: "https://matrassesapp.herokuapp.com/api/product",
         method: "POST", 
-        headers: {
-           "Content-Type":"multipart/form-data"
-        }, 
+        url: "https://matrassesapp.herokuapp.com/api/product", 
         data:formData
       }).then(res => {
         console.log(res);
         if (res.status === 200) {
           setToggle(!toggle)
           text.current?.classList.add('promodal__text--active');
+          handleToggle()
           setTimeout(() => {
           text.current?.classList.remove("promodal__text--active");
-            
           }, 5000)
         } else {
            text.current?.classList.add("promodal__text--error");
@@ -177,7 +174,7 @@ export const ProductModel: React.FC<Imodal> = ({ open, handleClose }) => {
                   name="price"
                   id="price"
                   className="promodal__input"
-                  placeholder="masalan: Lux Soft Memory"
+                  placeholder="masalan: 100000000"
                 />
                 <label htmlFor="yuklama" className="promodal__label">
                   Yuklama

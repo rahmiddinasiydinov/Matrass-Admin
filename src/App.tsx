@@ -3,7 +3,7 @@ import './App.scss';
 import { NavLink, Link } from 'react-router-dom';
 import { Routes, Route, } from 'react-router';
 import {ReactComponent as AdressIcon} from './Assets/Images/adress.svg'
-import {ReactComponent as Customer} from "./Assets/Images/customer.svg";
+import {ReactComponent as CustomerImg} from "./Assets/Images/customer.svg";
 import {ReactComponent as Order} from "./Assets/Images/home.svg";
 import {ReactComponent as Logo} from "./Assets/Images/logo.svg";
 import {ReactComponent as Product} from "./Assets/Images/product.svg";
@@ -20,6 +20,7 @@ import { Notfound } from './Pages/Notfound';
 import { Products } from './Pages/Product';
 import { Technologies } from './Pages/Technologies';
 import { Adress } from './Pages/Adress';
+import { Customer } from './Pages/Customer';
 function App() {
   const [open, setopen] = useState<boolean>(false)
   const handletoggle = () => setopen(!open);
@@ -49,7 +50,7 @@ function App() {
           <li className="app__item">
             <NavLink to="/customer" className="app__link">
               <span className="app__icon">
-                <Customer />
+                <CustomerImg />
               </span>{" "}
               Customer
             </NavLink>
@@ -127,7 +128,8 @@ function App() {
             <Route path="/*" element={<Notfound />} />
             <Route path="/product/" element={<Products />} />
             <Route path="/technology/" element={<Technologies />} />
-            <Route path="/adress" element={<Adress/>} />
+            <Route path="/adress" element={<Adress />} />
+            <Route path="/customer" element={<Customer />} />
           </Routes>
         </div>
       </div>

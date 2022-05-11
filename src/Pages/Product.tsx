@@ -51,7 +51,7 @@ export const Products: React.FC = () => {
       })
     );
   }, [toggle]);
-
+  const handleToggle = () => setToggle(!toggle);
   const handleDelete = (id: number) => {
     handleWarningClick();
     fetch("https://matrassesapp.herokuapp.com/api/product", {
@@ -74,7 +74,8 @@ export const Products: React.FC = () => {
       })
       .catch((e: any) => {
         handleWarningClose();
-        handleErrorClick();
+        handleClick();
+        setToggle(!toggle);
       });
   };
 
@@ -107,7 +108,7 @@ export const Products: React.FC = () => {
   };
   return (
       <>
-          <ProductModel open={modalOpen} handleClose={ handleModalClose}/>
+      <ProductModel open={modalOpen} handleClose={handleModalClose} handleToggle={ handleToggle}/>
       {" "}
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
